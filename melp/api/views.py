@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from .models import Restaurants
 from .serializers import RestaurantSerializer
 from rest_framework.response import Response
@@ -7,18 +7,53 @@ from geopy.distance import distance
 from statistics import mean
 from statistics import stdev
 
-#Read and write a collection of restaurant model
-class RestaurantList(generics.ListCreateAPIView):
-    serializer_class = RestaurantSerializer
-    def get_queryset(self):
-        queryset = Restaurants.objects.all()
-        return queryset
-    
-#Read, write and delete a single entry of restaurant model
-class RestaurantDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = RestaurantSerializer
+class RestauranteBaseView(generics.GenericAPIView):
     queryset = Restaurants.objects.all()
+    serializer_class = RestaurantSerializer
+#Create Restaurant view
+class RestaurantCreateView(RestauranteBaseView, generics.CreateAPIView):
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response_data = {
+            "msg": "Successfully created a restaurant",
+            "data": response.data
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED)
 
+#Retrieve Restaurant view
+class RestaurantReadView(RestauranteBaseView, generics.RetrieveAPIView):
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        response_data = {
+            "msg": "Successfully retrieved restaurant data",
+            "data": response.data,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+#Update Restaurant view
+class RestaurantUpdateView(RestauranteBaseView, generics.UpdateAPIView):
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        response_data = {
+            "msg": "Successfully updated restaurant data",
+            "data": response.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+#Delete Restaurant view
+class RestauranteDestroyView(RestauranteBaseView, generics.DestroyAPIView):
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        response_data = {
+            "message": "Successfully deleted restaurant"
+        }
+        return Response(response_data, status=status.HTTP_204_NO_CONTENT)
+    
+class RestauranteListView(generics.ListAPIView):
+    queryset = Restaurants.objects.all()
+    serializer_class = RestaurantSerializer
+    
 #Retrieve statistics of all the restaurants inside the radius of a given location
 @api_view(('GET',))
 def statistics(request):
