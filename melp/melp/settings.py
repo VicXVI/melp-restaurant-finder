@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-j@b=6&gck0q37#&-(i+8hyk1m1&e!(c=!0ag@tkszhu9un_4mi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['melp-restaurant-finder-production.up.railway.app']
+ALLOWED_HOSTS = ['melp-restaurant-finder-production.up.railway.app', 'localhost', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition
