@@ -79,14 +79,14 @@ WSGI_APPLICATION = 'melp.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 pymysql.install_as_MySQLdb()
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'melp-restaurant-finder',
-        'HOST': '127.0.0.1',
-        'USER': 'victor',
-        'PASSWORD': 'hola',
+        'NAME': 'railway',
+        'HOST': 'monorail.proxy.rlwy.net',
+        'USER': 'root',
+        'PASSWORD': 'nbvftlkbqxnGssDLnzNOXraMnHjgHjZE',
+        'PORT': '18689'
     }
 }
 
