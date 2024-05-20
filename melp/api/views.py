@@ -46,14 +46,14 @@ class RestauranteDestroyView(RestauranteBaseView, generics.DestroyAPIView):
         instance = self.get_object()
         self.perform_destroy(instance)
         response_data = {
-            "message": "Successfully deleted restaurant"
+            "msg": "Successfully deleted restaurant"
         }
         return Response(response_data, status=status.HTTP_204_NO_CONTENT)
     
 class RestauranteListView(generics.ListAPIView):
     queryset = Restaurants.objects.all()
     serializer_class = RestaurantSerializer
-    
+
 #Retrieve statistics of all the restaurants inside the radius of a given location
 @api_view(('GET',))
 def statistics(request):
@@ -66,7 +66,6 @@ def statistics(request):
     ratings = []
     for restaurant in restaurants:
         current_restaurant = (restaurant.lat, restaurant.lng)
-        print(distance(current_location, current_restaurant))
         if distance(current_location, current_restaurant) <= radius:
             inside_radius.append(restaurant)
             ratings.append(restaurant.rating)
